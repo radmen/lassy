@@ -1,0 +1,25 @@
+{
+    "name": "radmen/lassy",
+    "description": "Lazy static site generator for Laravel4",
+    "authors": [
+        {
+            "name": "Radoslaw Mejer",
+            "email": "radmen@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.0.x",
+        "illuminate/http": "4.0.x",
+        "illuminate/filesystem": "4.0.x"
+    },
+    "autoload": {
+        "psr-0": {
+            "Radmen\\Lassy": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "require-dev": {
+        "mockery/mockery": "0.8.*"
+    }
+}
