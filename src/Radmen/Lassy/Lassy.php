@@ -63,11 +63,11 @@ class Lassy {
     $this->filters[] = $filter;
   }
 
-  protected function canSave(Request $request) {
+  protected function canSave(Request $request, Response $response) {
 
     foreach($this->filters as $callback) {
 
-      if(false === $callback($request)) {
+      if(false === $callback($request, $response)) {
         return false;
       }
     }
@@ -81,7 +81,7 @@ class Lassy {
       return;
     }
 
-    if(false === $this->canSave($request)) {
+    if(false === $this->canSave($request, $response)) {
       return;
     }
 
