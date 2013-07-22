@@ -1,34 +1,48 @@
 <?php namespace Radmen\Lassy;
 
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\ServiceProvider;
 
 class LassyServiceProvider extends ServiceProvider {
 
-	/**
-	 * Indicates if loading of the provider is deferred.
-	 *
-	 * @var bool
-	 */
-	protected $defer = false;
+  /**
+   * Indicates if loading of the provider is deferred.
+   *
+   * @var bool
+   */
+  protected $defer = false;
 
-	/**
-	 * Register the service provider.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
-		//
-	}
+  /**
+   * Register the service provider.
+   *
+   * @return void
+   */
+  public function register() {
+    $this->package('radmen/lassy', 'lassy', __DIR__.'/../../');
+    $app = $this->app;
 
-	/**
-	 * Get the services provided by the provider.
-	 *
-	 * @return array
-	 */
-	public function provides()
-	{
-		return array();
-	}
+    $this->app['lassy'] = $this->app->share(function($app) {
+      $config = $app['config'];
+
+      $lassy = new Lassy($config->get('lassy::output_dir'), $app['files']);
+      $lassy->addFilter($config->get('lassy::filters'));
+
+      return $lassy;
+    });
+
+    $this->app->after(function(Request $request, Response $response) use ($app) {
+      $app['lassy']->save($request, $response);
+    });
+  }
+
+  /**
+   * Get the services provided by the provider.
+   *
+   * @return array
+   */
+  public function provides() {
+    return array('lassy');
+  }
 
 }
