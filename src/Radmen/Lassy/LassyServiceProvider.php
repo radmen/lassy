@@ -22,6 +22,16 @@ class LassyServiceProvider extends ServiceProvider {
     $this->package('radmen/lassy', 'lassy', __DIR__.'/../../');
     $app = $this->app;
 
+    $this->registerLassy();
+    $this->registerCleanerCommand();
+    $this->commands('command.lassy.cleaner');
+
+    $this->app->after(function(Request $request, Response $response) use ($app) {
+      $app['lassy']->save($request, $response);
+    });
+  }
+
+  protected function registerLassy() {
     $this->app['lassy'] = $this->app->share(function($app) {
       $config = $app['config'];
 
@@ -30,9 +40,14 @@ class LassyServiceProvider extends ServiceProvider {
 
       return $lassy;
     });
+  }
 
-    $this->app->after(function(Request $request, Response $response) use ($app) {
-      $app['lassy']->save($request, $response);
+  protected function registerCleanerCommand() {
+    $this->app['command.lassy.cleaner'] = $this->app->share(function($app) {
+      $cleaner = new Cleaner($app['config']->get('lassy::output_dir'), $app['files']);
+      $command = new Command\ClearFiles($cleaner);
+
+      return $command;
     });
   }
 
@@ -42,7 +57,7 @@ class LassyServiceProvider extends ServiceProvider {
    * @return array
    */
   public function provides() {
-    return array('lassy');
+    return array('lassy', 'command.lassy.cleaner');
   }
 
 }
