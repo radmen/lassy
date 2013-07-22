@@ -94,6 +94,7 @@ class LassyTest extends PHPUnit_Framework_TestCase {
     $fs->shouldReceive('makeDirectory')->never();
     $fs->shouldReceive('put')->never();
 
+    $this->setExpectedException('RuntimeException');
     $lassy = new Lassy('_static', $fs);
     $lassy->save($request, $response);
   }
@@ -111,6 +112,11 @@ class LassyTest extends PHPUnit_Framework_TestCase {
 
     $lassy = new Lassy('_static', $fs);
     $lassy->save($request, $response);
+  }
+
+  public function testIfLassyThrowsExceptionWhenInvaldOutputDir() {
+    $this->setExpectedException('InvalidArgumentException');
+    new Lassy(null, m::mock('Illuminate\Filesystem\Filesystem'));
   }
 
 }

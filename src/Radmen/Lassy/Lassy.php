@@ -27,6 +27,11 @@ class Lassy {
    * @param \Illuminate\Filesystem\Filesystem $filesystem
    */
   public function __construct($outputDir, Filesystem $filesystem) {
+
+    if(false === is_string($outputDir)) {
+      throw new \InvalidArgumentException('outputDir must be valid string');
+    }
+
     $this->outputDir = $outputDir;
     $this->filesystem = $filesystem;
   }
@@ -99,7 +104,7 @@ class Lassy {
     $dir = rtrim($dir, '/');
 
     if(true === $this->filesystem->isFile($dir.'/'.$file)) {
-      return;
+      throw new \RuntimeException('Bump. Static file exists.');
     }
 
     if(false === $this->filesystem->isDirectory($dir)) {
