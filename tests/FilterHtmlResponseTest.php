@@ -1,7 +1,7 @@
 <?php
 
 use Mockery as m;
-use Radmen\Lassy\Filter\Html as Filter;
+use Radmen\Lassy\Filter\HtmlResponse as Filter;
 
 class FilterHtmlTest extends PHPUnit_Framework_TestCase {
 

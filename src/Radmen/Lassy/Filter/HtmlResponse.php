@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Response;
 
-class Html {
+class HtmlResponse {
 
   /**
    * Allow Lassy to save only valid html responses
