@@ -1,6 +1,8 @@
 {
     "name": "radmen/lassy",
     "description": "Lazy static site generator for Laravel4",
+    "keywords": ["laravel", "static", "generator"],
+    "license": "MIT",
     "authors": [
         {
             "name": "Radoslaw Mejer",
