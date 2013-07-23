@@ -1,5 +1,7 @@
 # About
 
+[![Build Status](https://api.travis-ci.org/radmen/lassy.png)](https://travis-ci.org/radmen/lassy)
+
 Lassy is lazy static site generator. It means that every request (well not every.. check out [Filters section](#filters)) will generate a HTML file with its contents inside.
 
 Every next request will be redirected to this file.
