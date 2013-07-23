@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Radmen\Lassy\Filter;
 
 return array(
   
@@ -29,15 +30,19 @@ return array(
   'filters' => array(
     
     function(Request $request) {
-      return with(new Radmen\Lassy\Filter\AjaxRequest())->filter($request);
+      return with(new Filter\AjaxRequest)->filter($request);
     },
 
     function(Request $request) {
-      return with(new Radmen\Lassy\Filter\GetRequest())->filter($request);
+      return with(new Filter\GetRequest)->filter($request);
     },
 
     function(Request $request, Response $response) {
-      return with(new Radmen\Lassy\Filter\HtmlResponse())->filter($response);
+      return with(new Filter\HtmlResponse)->filter($response);
+    },
+
+    function(Request $request) {
+      return with(new Filter\QueriedRequest)->filter($request);
     },
 
   ),
