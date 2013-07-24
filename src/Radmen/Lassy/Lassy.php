@@ -68,6 +68,13 @@ class Lassy {
     $this->filters[] = $filter;
   }
 
+  /**
+   * Check if response can be stored
+   *
+   * @param \Illuminate\Http\Request $request
+   * @param \Illuminate\Http\Response $response
+   * @return boolean if FALSE response won't be saved
+   */
   protected function canSave(Request $request, Response $response) {
 
     foreach($this->filters as $callback) {
@@ -80,6 +87,37 @@ class Lassy {
     return true;
   }
 
+  /**
+   * Get file path based on request pathinfo
+   *
+   * @param \Illuminate\Http\Request $request
+   * @return string
+   */
+  public function getFilePath(Request $request) {
+    $pathinfo = $request->getPathInfo();
+
+    if('' == $this->filesystem->extension($pathinfo)) {
+      $file = 'index.html';
+      $dir = trim($pathinfo, '/');
+    }
+    else {
+      $file = basename($pathinfo);
+      $dir = trim(dirname($pathinfo), '/');
+    }
+
+    if(true === empty($dir)) {
+      return "{$this->outputDir}/{$file}";
+    }
+
+    return "{$this->outputDir}/{$dir}/{$file}";
+  }
+
+  /**
+   * Attempt to save response to HTML file
+   *
+   * @param \Illuminate\Http\Request $request
+   * @param \Illuminate\Http\Response $response
+   */
   public function save(Request $request, Response $response) {
 
     if(false === $this->enabled) {
@@ -90,20 +128,10 @@ class Lassy {
       return;
     }
 
-    $pathinfo = $request->getPathInfo();
+    $fullpath = $this->getFilePath($request);
+    $dir = dirname($fullpath);
 
-    if('' == $this->filesystem->extension($pathinfo)) {
-      $file = 'index.html';
-      $dir = $this->outputDir.'/'.trim($pathinfo, '/');
-    }
-    else {
-      $file = basename($pathinfo);
-      $dir = $this->outputDir.'/'.trim(dirname($pathinfo), '/');
-    }
-
-    $dir = rtrim($dir, '/');
-
-    if(true === $this->filesystem->isFile($dir.'/'.$file)) {
+    if(true === $this->filesystem->isFile($fullpath)) {
       throw new \RuntimeException('Bump. Static file exists.');
     }
 
@@ -111,7 +139,7 @@ class Lassy {
       $this->filesystem->makeDirectory($dir, 0777, true);
     }
 
-    $this->filesystem->put($dir.'/'.$file, $response->getContent());
+    $this->filesystem->put($fullpath, $response->getContent());
   }
 
 }

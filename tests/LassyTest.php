@@ -119,4 +119,22 @@ class LassyTest extends PHPUnit_Framework_TestCase {
     new Lassy(null, m::mock('Illuminate\Filesystem\Filesystem'));
   }
 
+  /**
+   * @dataProvider getFilePathProvider
+   */
+  public function testGetFilePath($pathinfo, $expected) {
+    $request = m::mock('Illuminate\Http\Request');
+    $request->shouldReceive('getPathInfo')->once()->andReturn($pathinfo);
+    $lassy = new Lassy('', new Illuminate\Filesystem\Filesystem);
+    $this->assertEquals($expected, $lassy->getFilePath($request));
+  }
+
+  public function getFilePathProvider() {
+    return array(
+      array('/foo/bar/baz', '/foo/bar/baz/index.html'),
+      array('/foo/bar/baz.html', '/foo/bar/baz.html'),
+      array('/', '/index.html'),
+    );
+  }
+
 }
