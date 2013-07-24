@@ -42,6 +42,25 @@ RewriteCond %{DOCUMENT_ROOT}/_static/%{REQUEST_URI}/index.html -f
 RewriteRule ^(.*)$ /_static/$1/index.html [QSA,PT,L]
 ```
 
+### Laravel
+
+If you have problem with server rewrites (it happens to me all the time) you can serve static files through Laravel application.
+
+In `app/filters.php` add:
+
+```php
+App::before(function($request)
+{
+  $path = Lassy::getFilePath($request);
+
+  if(true === is_file($path)) 
+  {
+    Lassy::disable();
+    return file_get_contents($path);
+  }
+});
+```
+
 # Filters
   
 In some situations static file should not be generated. That's where filters come in action.  
