@@ -38,6 +38,10 @@ class LassyServiceProvider extends ServiceProvider {
       $lassy = new Lassy($config->get('lassy::output_dir'), $app['files']);
       $lassy->addFilter($config->get('lassy::filters'));
 
+      if(false === $config->get('lassy::enabled')) {
+        $lassy->disable();
+      }
+
       return $lassy;
     });
   }

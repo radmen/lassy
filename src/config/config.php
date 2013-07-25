@@ -5,6 +5,17 @@ use Illuminate\Http\Response;
 use Radmen\Lassy\Filter;
 
 return array(
+
+  /*
+  |--------------------------------------------
+  | Enable Lassy
+  |--------------------------------------------
+  |
+  | To disable Lassy set this to FALSE
+  |
+  */
+
+  'enabled' => true,
   
   /*
   |--------------------------------------------
