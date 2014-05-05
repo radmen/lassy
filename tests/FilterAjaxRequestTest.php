@@ -5,6 +5,10 @@ use Radmen\Lassy\Filter\AjaxRequest as Filter;
 
 class FilterAjaxRequestTest extends PHPUnit_Framework_TestCase {
 
+  public function setUp() {
+    m::getConfiguration()->allowMockingNonExistentMethods(false);
+  }
+
   public function tearDown() {
     m::close();
   }

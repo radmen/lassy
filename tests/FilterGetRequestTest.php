@@ -5,6 +5,10 @@ use Radmen\Lassy\Filter\GetRequest as Filter;
 
 class FilterGetRequestTest extends PHPUnit_Framework_TestCase {
 
+  public function setUp() {
+    m::getConfiguration()->allowMockingNonExistentMethods(false);
+  }
+
   public function tearDown() {
     m::close();
   }
