@@ -13,7 +13,7 @@ Add `radmen/lassy` to `composer.json`:
 ```json
 {
   "require": {
-    "radmen/lassy": "1.0.*"
+    "radmen/lassy": "1.1.*"
    }
 }
 ```
